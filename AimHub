@@ -1,0 +1,135 @@
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Aimhub";
+    Text = "Made By SeiyakMuntikan";
+    Icon = "";
+    Duration = "3";
+})
+Wait(0.5)
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Aimhub";
+    Text = "Wait 5 Seconds";
+    Icon = "";
+    Duration = "3";
+})
+
+wait(5)
+
+local Gui = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local Start = Instance.new("TextLabel")
+local Aimbot = Instance.new("TextButton")
+local UICorner_2 = Instance.new("UICorner")
+local Start_2 = Instance.new("TextLabel")
+
+-- Renoobs
+
+Gui.Name = "Gui"
+Gui.Parent = game.CoreGui
+
+Main.Name = "Main"
+Main.Parent = Gui
+Main.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+Main.ClipsDescendants = true
+Main.Position = UDim2.new(0.0112866815, 0, 0.0211538468, 0)
+Main.Size = UDim2.new(0, 140, 0, 90)
+Main.Active = true
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = Main
+
+Start.Name = "Start"
+Start.Parent = Main
+Start.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Start.BackgroundTransparency = 1.000
+Start.Size = UDim2.new(0, 140, 0, 25)
+Start.Font = Enum.Font.FredokaOne
+Start.Text = "AimHub"
+Start.TextColor3 = Color3.fromRGB(255, 255, 255)
+Start.TextSize = 14.000
+Start.TextWrapped = true
+
+Aimbot.Name = "Aimbot"
+Aimbot.Parent = Main
+Aimbot.BackgroundColor3 = Color3.fromRGB(0, 0, 127)
+Aimbot.Position = UDim2.new(0.042857144, 0, 0.366666675, 0)
+Aimbot.Size = UDim2.new(0, 127, 0, 24)
+Aimbot.Font = Enum.Font.Bangers
+Aimbot.Text = "Aimbot"
+Aimbot.TextColor3 = Color3.fromRGB(255, 255, 255)
+Aimbot.TextSize = 14.000
+Aimbot.MouseButton1Down:Connect(function()
+	local RunService = game:GetService("RunService")
+	local camera = workspace.CurrentCamera
+
+	local isRunning = true
+
+	local function aimCamera()
+		if isRunning then
+			
+			local player = game.Players.LocalPlayer
+			local character = player.Character or player.CharacterAdded:Wait()
+
+			local nearestPlayer, nearestDistance = nil, math.huge
+			for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
+				if otherPlayer.Character and otherPlayer.Character:FindFirstChild("Head") and otherPlayer ~= player then
+					local distance = (otherPlayer.Character.Head.Position - character.Head.Position).Magnitude
+					if distance < nearestDistance then
+						nearestPlayer = otherPlayer
+						nearestDistance = distance
+					end
+				end
+			end
+
+			if nearestPlayer then
+				local humanoid = nearestPlayer.Character:FindFirstChildOfClass("Humanoid")
+				if humanoid then
+					local head = nearestPlayer.Character.Head
+					local offset = Vector3.new(0, humanoid.CameraOffset, 0)
+					local target = head.Position + offset
+					local lookVector = (target - camera.CFrame.Position).Unit
+					camera.CFrame = CFrame.new(camera.CFrame.Position, target)
+					camera.Focus = CFrame.new(target, target + lookVector)
+				end
+			end
+		end
+	end
+
+	local function toggleScript(input, gameProcessedEvent)
+		if input.KeyCode == Enum.KeyCode.Q and not gameProcessedEvent then
+			isRunning = not isRunning
+		end
+	end
+
+	game:GetService("UserInputService").InputBegan:Connect(toggleScript)
+
+	RunService.RenderStepped:Connect(aimCamera)
+end)
+
+UICorner_2.Parent = Aimbot
+
+Start_2.Name = "Start"
+Start_2.Parent = Main
+Start_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Start_2.BackgroundTransparency = 1.000
+Start_2.Position = UDim2.new(0, 0, 0.722222209, 0)
+Start_2.Size = UDim2.new(0, 140, 0, 25)
+Start_2.Font = Enum.Font.FredokaOne
+Start_2.Text = "KEYCODE\"Q\" - ON/OFF"
+Start_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Start_2.TextSize = 10.000
+Start_2.TextWrapped = true
+
+-- Scripts:
+
+local function GUONRMW_fake_script() -- Main.LocalScript 
+	local script = Instance.new('LocalScript', Main)
+
+	local Frame = script.Parent
+	local Text = script.Parent.Start
+	
+	Frame.Size = UDim2.new(0, 140,0, 0)
+	wait(0.5)
+	Frame:TweenSize(UDim2.new(0, 140,0, 90),"Out","Sine",2,true)
+end
+coroutine.wrap(GUONRMW_fake_script)()
